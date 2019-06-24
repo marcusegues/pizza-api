@@ -22,7 +22,6 @@ usersHandler.get = (data: DataObject, callback) => {
   } else if (typeof data.queryStringObject.username === 'string') {
     const username =
       data.queryStringObject.username.length < 30 ? data.queryStringObject.username.trim() : false;
-
     if (username) {
       const token = typeof data.headers.token === 'string' ? data.headers.token : false;
       tokensHandler.verifyToken(token, username, isTokenValid => {
@@ -41,6 +40,8 @@ usersHandler.get = (data: DataObject, callback) => {
     } else {
       callback(403, { error: 'Username must be shorter than 30 characters.' });
     }
+  } else {
+    callback(400, { error: 'Missing query string parameter' });
   }
 };
 
@@ -114,7 +115,7 @@ usersHandler.put = (data, callback) => {
     typeof data.payload.address === 'string' && data.payload.address.length > 0
       ? data.payload.address
       : false;
-
+  console.log(data.headers.token);
   if (username) {
     if (email || password || address) {
       var token = typeof data.headers.token === 'string' ? data.headers.token : false;

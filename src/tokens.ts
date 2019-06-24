@@ -3,12 +3,12 @@ import { helpers } from './helpers';
 
 interface Token {
   id: string;
-  email: string;
+  username: string;
   expires: number;
 }
 
 export interface TokensHandler {
-  verifyToken: (id: any, email: string, callback: (err: boolean) => any) => void;
+  verifyToken: (id: any, username: string, callback: (err: boolean) => any) => void;
   get: (data, callback) => any;
   post: (data, callback) => any;
   put: (data, callback) => any;
@@ -18,7 +18,7 @@ export interface TokensHandler {
 export const tokensHandler = {} as TokensHandler;
 
 // Verify if a given token id is currently valid for a given user
-tokensHandler.verifyToken = (id, email, callback) => {
+tokensHandler.verifyToken = (id, username, callback) => {
   if (typeof id !== 'string') {
     callback(false);
     return;
@@ -27,7 +27,7 @@ tokensHandler.verifyToken = (id, email, callback) => {
   dataInterface.read('tokens', id, (err, tokenData: Token) => {
     if (!err && tokenData) {
       // Check that the token is for the given user and has not expired
-      if (tokenData.email === email && tokenData.expires > Date.now()) {
+      if (tokenData.username === username && tokenData.expires > Date.now()) {
         callback(true);
       } else {
         callback(false);
