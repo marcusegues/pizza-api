@@ -1,4 +1,4 @@
-import { tokens } from '../tokens';
+import { tokensHandler } from '../tokens';
 import { dataInterface } from '../dataInterface';
 import { DataObject } from '../../index';
 import { helpers } from '../helpers';
@@ -25,7 +25,7 @@ usersHandler.get = (data: DataObject, callback) => {
 
     if (username) {
       const token = typeof data.headers.token === 'string' ? data.headers.token : false;
-      tokens.verifyToken(token, username, isTokenValid => {
+      tokensHandler.verifyToken(token, username, isTokenValid => {
         if (isTokenValid) {
           dataInterface.read('users', username, (err, userData) => {
             if (err) {
@@ -118,7 +118,7 @@ usersHandler.put = (data, callback) => {
   if (username) {
     if (email || password || address) {
       var token = typeof data.headers.token === 'string' ? data.headers.token : false;
-      tokens.verifyToken(token, username, isTokenValid => {
+      tokensHandler.verifyToken(token, username, isTokenValid => {
         if (isTokenValid) {
           dataInterface.read('users', username, (err, userData) => {
             const newUser = {
@@ -154,7 +154,7 @@ usersHandler.delete = (data, callback) => {
 
   if (username) {
     const token = typeof data.headers.token === 'string' ? data.headers.token : false;
-    tokens.verifyToken(token, username, isTokenValid => {
+    tokensHandler.verifyToken(token, username, isTokenValid => {
       if (isTokenValid) {
         dataInterface.read('users', username, err => {
           if (!err) {

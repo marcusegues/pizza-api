@@ -17,7 +17,6 @@ dataInterface.baseDir = path.join(__dirname, '../.data');
 
 // Write data to a file
 dataInterface.create = function(dir, file, data, callback) {
-  console.log('In create dir is ', path.join(__dirname));
   const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
   console.log('file path is ', filePath);
   // Open the file for writing
@@ -48,7 +47,6 @@ dataInterface.create = function(dir, file, data, callback) {
 
 dataInterface.read = function(dir, file, callback) {
   const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
-  console.log(`Reading in ${filePath}`);
   fs.readFile(filePath, 'utf8', function(err, data) {
     if (!err && data) {
       var parsedData = helpers.parseJsonToObject(data);
@@ -60,9 +58,8 @@ dataInterface.read = function(dir, file, callback) {
 };
 
 dataInterface.update = function(dir, file, data, callback) {
-  const filePath = dataInterface.baseDir + dir + '/' + file + '.json';
+  const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
   // open the file for writing
-  console.log('Opening ', filePath);
   fs.open(filePath, 'r+', function(err, fileDescriptor) {
     if (!err && fileDescriptor) {
       // Convert data to string
@@ -96,7 +93,7 @@ dataInterface.update = function(dir, file, data, callback) {
 };
 
 dataInterface.delete = function(dir, file, callback) {
-  const filePath = dataInterface.baseDir + dir + '/' + file + '.json';
+  const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
   // unlink the file
   fs.unlink(filePath, function(err) {
     if (!err) {
