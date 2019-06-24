@@ -10,7 +10,7 @@ import { handlers } from './src/handlers';
 
 import { helpers } from './src/helpers';
 
-interface DataObject {
+export interface DataObject {
   queryStringObject: ParsedUrlQuery;
   method: string;
   headers: IncomingHttpHeaders;
@@ -61,9 +61,9 @@ const server = http.createServer(function(req, res) {
     // route the request to the handler
     chosenHandler(data, function(statusCode, payload) {
       // use  status code called back by handler or use default status code 200
-      statusCode = typeof statusCode == 'number' ? statusCode : 200;
+      statusCode = typeof statusCode === 'number' ? statusCode : 200;
       // use payload called back by handler or use default: empty object
-      payload = typeof payload == 'object' ? payload : {};
+      payload = typeof payload === 'object' ? payload : {};
 
       // convert payload to string, to be sent back to user
       const payloadString = JSON.stringify(payload);

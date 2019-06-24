@@ -1,17 +1,27 @@
-// lib for storing, editing, and accessing data
-
+// module for storing and editing data saved to disk
 import fs from 'fs';
 import path from 'path';
 import { helpers } from './helpers';
 
-const lib = {} as any;
+interface DataInterface {
+  baseDir: string;
+  create: (dir: string, file: string, data: any, callback: (err: any, data?: any) => any) => void;
+  read: (dir: string, file: string, callback: (err: any, data?: any) => any) => void;
+  update: (dir: string, file: string, data: {}, callback: (err: any, data?: any) => any) => void;
+  delete: (dir: string, file: string, callback: (err: any, data?: any) => any) => void;
+}
 
-lib.baseDir = path.join(__dirname, '../.data/');
+export const dataInterface = {} as DataInterface;
+
+dataInterface.baseDir = path.join(__dirname, '../.data');
 
 // Write data to a file
-lib.create = function(dir, file, data, callback) {
+dataInterface.create = function(dir, file, data, callback) {
+  console.log('In create dir is ', path.join(__dirname));
+  const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
+  console.log('file path is ', filePath);
   // Open the file for writing
-  fs.open(lib.baseDir + dir + '/' + file + '.json', 'wx', function(err, fileDescriptor) {
+  fs.open(filePath, 'wx', function(err, fileDescriptor) {
     if (!err && fileDescriptor) {
       // Convert data to string
       var stringData = JSON.stringify(data);
@@ -31,13 +41,15 @@ lib.create = function(dir, file, data, callback) {
         }
       });
     } else {
-      callback('Could not create new file, it may already exist' + err);
+      callback('Could not create new file: ' + err);
     }
   });
 };
 
-lib.read = function(dir, file, callback) {
-  fs.readFile(lib.baseDir + dir + '/' + file + '.json', 'utf8', function(err, data) {
+dataInterface.read = function(dir, file, callback) {
+  const filePath = `${dataInterface.baseDir}/${dir}/${file}.json`;
+  console.log(`Reading in ${filePath}`);
+  fs.readFile(filePath, 'utf8', function(err, data) {
     if (!err && data) {
       var parsedData = helpers.parseJsonToObject(data);
       callback(false, parsedData);
@@ -47,8 +59,8 @@ lib.read = function(dir, file, callback) {
   });
 };
 
-lib.update = function(dir, file, data, callback) {
-  const filePath = lib.baseDir + dir + '/' + file + '.json';
+dataInterface.update = function(dir, file, data, callback) {
+  const filePath = dataInterface.baseDir + dir + '/' + file + '.json';
   // open the file for writing
   console.log('Opening ', filePath);
   fs.open(filePath, 'r+', function(err, fileDescriptor) {
@@ -83,9 +95,10 @@ lib.update = function(dir, file, data, callback) {
   });
 };
 
-lib.delete = function(dir, file, callback) {
+dataInterface.delete = function(dir, file, callback) {
+  const filePath = dataInterface.baseDir + dir + '/' + file + '.json';
   // unlink the file
-  fs.unlink(lib.baseDir + dir + '/' + file + '.json', function(err) {
+  fs.unlink(filePath, function(err) {
     if (!err) {
       callback(false);
     } else {

@@ -38,5 +38,9 @@ module.exports = env => {
       extensions: ['.ts', '.tsx', '.js'],
     },
     plugins: [new webpack.DefinePlugin(envKeys)],
+    node: {
+      __dirname: true,
+    },
+    context: path.resolve(__dirname),
   };
 };
