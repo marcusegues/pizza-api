@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts:compile": "tsc --noEmit -p .",
-    "webpack": "webpack --mode development --env.ENVIRONMENT=dev"
+    "webpack": "webpack --mode development --env.ENVIRONMENT=dev",
+    "server": "nodemon ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,14 +21,14 @@
   },
   "homepage": "https://github.com/marcusegues/pizza-api#readme",
   "devDependencies": {
+    "@types/node": "^11.13.7",
     "dotenv": "^8.0.0",
+    "nodemon": "^1.19.1",
     "prettier": "^1.17.0",
     "ts-loader": "^6.0.4",
+    "typescript": "^3.4.5",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.4"
   },
-  "dependencies": {
-    "@types/node": "^11.13.7",
-    "typescript": "^3.4.5"
-  }
+  "dependencies": {}
 }

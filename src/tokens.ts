@@ -16,6 +16,7 @@ export const tokens = {} as Tokens;
 tokens.verifyToken = (id, email, callback) => {
   if (typeof id !== 'string') {
     callback(false);
+    return;
   }
   // Lookup the token
   dataInterface.read('tokens', id, (err, tokenData: Token) => {
